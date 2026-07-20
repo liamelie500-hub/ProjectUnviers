@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Univers - Launcher & Build</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --primary: #6c3ce0;
+            --secondary: #00d4ff;
+            --bg-dark: #0a0a0f;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0c0;
+            --glass-bg: rgba(255,255,255,0.08);
+            --glass-border: rgba(255,255,255,0.15);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animated-bg {
+            position: fixed;
+            top:0; left:0; width:100%; height:100%;
+            z-index:-1;
+            background: linear-gradient(-45deg, #0a0a0f, #1a0a2e, #0a1a2e, #0a0a0f);
+            background-size: 400% 400%;
+            animation: gradientFlow 15s ease infinite;
+        }
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+        }
+        .header { text-align: center; margin-bottom: 3rem; }
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .header p { color: var(--text-secondary); font-size: 1.2rem; }
+        .stats {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            background: var(--glass-bg);
+            padding: 1rem 2rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            min-width: 120px;
+        }
+        .stat-number { display: block; font-size: 2rem; font-weight: 700; color: var(--secondary); }
+        .stat-label { color: var(--text-secondary); font-size: 0.9rem; }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            width: 100%;
+        }
+        .file-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            text-align: center;
+        }
+        .file-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(108,60,224,0.2);
+        }
+        .file-card-image {
+            font-size: 5rem;
+            padding: 2rem 0 1rem;
+            background: linear-gradient(135deg, rgba(108,60,224,0.15), rgba(0,212,255,0.15));
+        }
+        .file-card-content { padding: 1.5rem; }
+        .file-card-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .file-card-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--secondary);
+            background: rgba(0,212,255,0.1);
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            border: 1px solid rgba(0,212,255,0.2);
+            margin: 0.5rem auto;
+        }
+        .file-card-description { color: var(--text-secondary); font-size: 0.95rem; margin: 0.5rem 0; }
+        .file-card-meta {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin: 0.75rem 0;
+            flex-wrap: wrap;
+        }
+        .file-card-meta span {
+            background: var(--glass-bg);
+            padding: 0.2rem 0.8rem;
+            border-radius: 4px;
+            border: 1px solid var(--glass-border);
+        }
+        .file-card-date { color: var(--text-secondary); font-size: 0.85rem; margin: 0.5rem 0; }
+        .btn {
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.8rem 2rem;
+            width: 100%;
+            color: white;
+            margin-top: 0.5rem;
+        }
+        .btn-launcher {
+            background: linear-gradient(135deg, #00d4ff, #0088cc);
+            box-shadow: 0 4px 20px rgba(0,212,255,0.3);
+            animation: pulse 2s infinite;
+        }
+        .btn-launcher:hover { transform: scale(1.02); box-shadow: 0 8px 30px rgba(0,212,255,0.5); }
+        .btn-build {
+            background: linear-gradient(135deg, #6c3ce0, #4a1fa8);
+            box-shadow: 0 4px 20px rgba(108,60,224,0.3);
+            animation: glow 2s infinite;
+        }
+        .btn-build:hover { transform: scale(1.02); box-shadow: 0 8px 30px rgba(108,60,224,0.5); }
+        @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+        @keyframes glow { 0%,100% { box-shadow: 0 4px 20px rgba(108,60,224,0.3); } 50% { box-shadow: 0 4px 40px rgba(108,60,224,0.6); } }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 1rem 2rem;
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+            border-left: 4px solid var(--secondary);
+        }
+        .toast.success { border-left-color: #00c851; }
+        .toast.error { border-left-color: #ff4444; }
+        .toast.info { border-left-color: var(--secondary); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        @media (max-width: 600px) {
+            .header h1 { font-size: 2.5rem; }
+            .stats { gap: 1rem; }
+            .stat-item { padding: 0.8rem 1.5rem; min-width: 100px; }
+            .stat-number { font-size: 1.5rem; }
+            .card-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+
+    <div class="header">
+        <h1>✦ Univers</h1>
+        <p>Téléchargez et installez vos applications en un clic</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat-item">
+            <span class="stat-number" id="statFiles">2</span>
+            <span class="stat-label">Fichiers</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number" id="statDownloads">0</span>
+            <span class="stat-label">Téléchargements</span>
+        </div>
+    </div>
+
+    <div class="card-grid" id="fileGrid"></div>
+
+    <script>
+        // ================================================================
+        // 1. LISTE DES FICHIERS
+        // ================================================================
+        const files = [
+            {
+                id: 1,
+                name: "Luncher",
+                description: "Application de lancement rapide",
+                version: "3.2.0",
+                size: "450 MB",
+                downloads: 156,
+                image: "🚀",
+                date: "2024-07-15",
+                type: "launcher",
+                url: "fichiers/Luncher.zip"
+            },
+            {
+                id: 2,
+                name: "Build",
+                description: "Version de build optimisée",
+                version: "2.1.0",
+                size: "2.5 GB",
+                downloads: 432,
+                image: "🏗️",
+                date: "2024-07-12",
+                type: "build",
+                url: "fichiers/Build.zip"
+            }
+        ];
+
+        // ================================================================
+        // 2. COMPTEURS
+        // ================================================================
+        function loadDownloads() {
+            try {
+                const data = localStorage.getItem('univers_downloads');
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    files.forEach(f => {
+                        if (parsed[f.id] !== undefined) f.downloads = parsed[f.id];
+                    });
+                }
+            } catch(e) {}
+        }
+
+        function saveDownloads() {
+            const obj = {};
+            files.forEach(f => { obj[f.id] = f.downloads; });
+            localStorage.setItem('univers_downloads', JSON.stringify(obj));
+        }
+
+        // ================================================================
+        // 3. AFFICHAGE
+        // ================================================================
+        function renderCards() {
+            const grid = document.getElementById('fileGrid');
+            grid.innerHTML = files.map(file => {
+                const btnClass = file.type === 'launcher' ? 'btn-launcher' : 'btn-build';
+                const btnText = file.type === 'launcher' ? '🚀 Télécharger' : '🏗️ Télécharger';
+                const badgeText = file.type === 'launcher' ? '🚀 LAUNCHER' : '🏗️ BUILD';
+                return `
+                    <div class="file-card">
+                        <div class="file-card-image">${file.image}</div>
+                        <div class="file-card-content">
+                            <div class="file-card-title">${file.name}</div>
+                            <div class="file-card-badge">${badgeText}</div>
+                            <div class="file-card-description">${file.description}</div>
+                            <div class="file-card-meta">
+                                <span>📦 ${file.version}</span>
+                                <span>💾 ${file.size}</span>
+                                <span>⬇️ ${file.downloads}</span>
+                            </div>
+                            <div class="file-card-date">📅 ${file.date}</div>
+                            <button class="btn ${btnClass}" onclick="handleAction(${file.id})">${btnText}</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('statFiles').textContent = files.length;
+            const totalDownloads = files.reduce((sum, f) => sum + f.downloads, 0);
+            document.getElementById('statDownloads').textContent = totalDownloads;
+        }
+
+        // ================================================================
+        // 4. TÉLÉCHARGEMENT AVEC window.open()
+        // ================================================================
+        function handleAction(id) {
+            const file = files.find(f => f.id === id);
+            if (!file) return;
+
+            // Incrémenter le compteur
+            file.downloads++;
+            saveDownloads();
+            renderCards();
+
+            // Ouvrir le fichier dans un nouvel onglet (le navigateur le télécharge si c'est un ZIP)
+            window.open(file.url, '_blank');
+
+            showToast(`✅ Téléchargement de "${file.name}" lancé !`, 'success');
+        }
+
+        // ================================================================
+        // 5. TOAST
+        // ================================================================
+        function showToast(message, type = 'info') {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // ================================================================
+        // 6. INIT
+        // ================================================================
+        loadDownloads();
+        renderCards();
+
+        console.log('🚀 Univers prêt !');
+        console.log('📁 Fichiers : fichiers/Luncher.zip et fichiers/Build.zip');
+    </script>
+</body>
+</html>

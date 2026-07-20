@@ -1,0 +1,83 @@
+/* Styles spécifiques au tableau de bord */
+.dashboard-banner {
+    background: linear-gradient(135deg, rgba(108, 60, 224, 0.2), rgba(0, 212, 255, 0.2));
+    padding: 4rem 2rem;
+    margin: 2rem;
+    border-radius: var(--radius);
+    text-align: center;
+    border: 1px solid var(--glass-border);
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(108, 60, 224, 0.1), transparent 70%);
+    animation: float 20s ease-in-out infinite;
+}
+
+.dashboard-banner-content {
+    position: relative;
+    z-index: 1;
+}
+
+.dashboard-banner h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.stat-item {
+    background: var(--glass-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--glass-border);
+    transition: var(--transition);
+}
+
+.stat-item:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+.stat-label {
+    display: block;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+}
+
+.announcements {
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-left: 4px solid var(--secondary);
+}
+
+.announcements h2 {
+    color: var(--secondary);
+    margin-bottom: 1rem;
+}
+
+.announcements p {
+    margin-bottom: 0.5rem;
+}

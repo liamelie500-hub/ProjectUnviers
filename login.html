@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Univers</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="animated-bg"></div>
+    
+    <div class="form-container">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h1 style="font-size: 2.5rem; background: linear-gradient(135deg, #00d4ff, #6c3ce0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Univers</h1>
+            <p style="color: var(--text-secondary);">Connectez-vous à votre compte</p>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="email">Adresse e-mail</label>
+                <input type="email" id="email" placeholder="exemple@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" placeholder="Votre mot de passe" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Se connecter</button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.5rem;">
+            <p style="color: var(--text-secondary);">
+                Pas encore de compte ? 
+                <a href="register.html" style="color: var(--secondary); text-decoration: none; font-weight: 600;">Créer un compte</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>

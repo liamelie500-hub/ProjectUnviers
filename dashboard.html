@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord - Univers</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="animated-bg"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="dashboard.html" class="navbar-brand">Univers</a>
+            <div class="nav-links">
+                <a href="dashboard.html">Accueil</a>
+                <a href="files.html">Fichiers</a>
+                <a href="profile.html">Profil</a>
+                <a href="#" onclick="handleLogout()" class="btn btn-secondary">Déconnexion</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Banner Dashboard -->
+    <div class="dashboard-banner">
+        <div class="dashboard-banner-content">
+            <h1>Bienvenue sur Univers</h1>
+            <p>Votre plateforme de téléchargement moderne et sécurisée</p>
+            <div class="dashboard-stats">
+                <div class="stat-item">
+                    <span class="stat-number">1,234</span>
+                    <span class="stat-label">Fichiers disponibles</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">5,678</span>
+                    <span class="stat-label">Téléchargements</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">123</span>
+                    <span class="stat-label">Utilisateurs actifs</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dernières annonces -->
+    <div style="max-width: 1400px; margin: 0 auto; padding: 2rem;">
+        <div class="announcements glass" style="padding: 2rem; margin-bottom: 2rem;">
+            <h2 style="margin-bottom: 1rem;">📢 Dernières annonces</h2>
+            <div id="announcements-list">
+                <p>Nouvelle version de l'application disponible !</p>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Mise à jour majeure avec de nombreuses améliorations.</p>
+            </div>
+        </div>
+
+        <h2 style="margin-bottom: 1rem;">Fichiers récents</h2>
+        <div class="card-grid" id="dashboard-files">
+            <!-- Fichiers chargés dynamiquement -->
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
